@@ -172,6 +172,32 @@ function computerAI() {
   }
 }
 
+function showGameOverEl(winner) {
+  // Hide Canvas
+
+  // // Container
+  // gameOverEl.textContent = '';
+  // gameOverEl.classList.add('game-over-container');
+  // // Title
+  // const title = document.createElement('h1');
+  // title.textContent = `${winner} Wins!`;
+  // // Button
+  // const playAgainBtn = document.createElement('button');
+  // playAgainBtn.setAttribute('onclick', 'startGame()');
+  // playAgainBtn.textContent = 'Play Again';
+  // // Append
+}
+
+// Check If One Player Has Winning Score, If They Do, End Game
+function gameOver() {
+  // if (playerScore === winningScore || computerScore === winningScore) {
+  //   isGameOver = ;
+  //   // Set Winner
+  //   let winner = ;
+  //   showGameOverEl(winner);
+  // }
+}
+
 // Called Every Frame
 function animate() {
   computerAI();
