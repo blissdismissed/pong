@@ -1,9 +1,13 @@
 // Canvas Related 
 const canvas = document.createElement('canvas');
 const context = canvas.getContext('2d');
-const isMobile = window.matchMedia('(max-width: 600px)');
+
+//   // Single Player Thangs
+// const isMobile = window.matchMedia('(max-width: 600px)');
+// const gameOverEl = document.createElement('div');
+
 let paddleIndex = 0;
-const gameOverEl = document.createElement('div');
+
 let width = 500;
 let height = 700;
 
