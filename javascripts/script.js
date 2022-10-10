@@ -1,6 +1,7 @@
 // Canvas Related 
 const canvas = document.createElement('canvas');
 const context = canvas.getContext('2d');
+const socket = io('http://localhost:3000');
 
 //   // Single Player Thangs
 // const isMobile = window.matchMedia('(max-width: 600px)');
@@ -28,7 +29,7 @@ let ballDirection = 1;
 // Speed
 let speedY = 2;
 let speedX = 0;
-let computerSpeed = 4;
+// let computerSpeed = 4;
 
 // Score for Both Players
 let score = [ 0, 0 ];
@@ -46,16 +47,16 @@ function createCanvas() {
 }
 
 // Wait for Opponents
-// function renderIntro() {
-//   // Canvas Background
-//   context.fillStyle = 'black';
-//   context.fillRect(0, 0, width, height);
+function renderIntro() {
+  // Canvas Background
+  context.fillStyle = 'black';
+  context.fillRect(0, 0, width, height);
 
-//   // Intro Text
-//   context.fillStyle = 'white';
-//   context.font = "32px Courier New";
-//   context.fillText("Waiting for opponent...", 20, (canvas.height / 2) - 30);
-// }
+  // Intro Text
+  context.fillStyle = 'white';
+  context.font = "32px Courier New";
+  context.fillText("Waiting for opponent...", 20, (canvas.height / 2) - 30);
+}
 
 // Render Everything on Canvas
 function renderCanvas() {
@@ -155,27 +156,11 @@ function ballBoundaries() {
       speedX = trajectoryX[1] * 0.3;
     } else {
       // Reset Ball, Increase Computer Difficulty, add to Player Score
-      if (computerSpeed < 6) {
-        computerSpeed += 0.5;
-      }
+      // if (computerSpeed < 6) {
+      //   computerSpeed += 0.5;
+      // }
       ballReset();
       score[0]++;
-    }
-  }
-}
-
-// Computer Movement
-function computerAI() {
-  if (playerMoved) {
-    if (paddleX[1] + paddleDiff < ballX) {
-      paddleX[1] += computerSpeed;
-    } else {
-      paddleX[1] -= computerSpeed;
-    }
-    if (paddleX[1] < 0) {
-      paddleX[1] = 0;
-    } else if (paddleX[1] > (width - paddleWidth)) {
-      paddleX[1] = width - paddleWidth;
     }
   }
 }
@@ -201,31 +186,27 @@ function showGameOverEl(winner) {
 }
 
 // Check If One Player Has Winning Score, If They Do, End Game
-function gameOver() {
-  if (score[0] === winningScore || score[1] === winningScore) {
-    isGameOver = true;
-    // Set Winner
-    let winner = score[0] === winningScore ? 'Player 1': 'Computer';
-    showGameOverEl(winner);
-  }
-}
+// function gameOver() {
+//   if (score[0] === winningScore || score[1] === winningScore) {
+//     isGameOver = true;
+//     // Set Winner
+//     let winner = score[0] === winningScore ? 'Player 1': 'Computer';
+//     showGameOverEl(winner);
+//   }
+// }
 
 // Called Every Frame
 function animate() {
-  computerAI();
   ballMove();
   renderCanvas();
   ballBoundaries();
-  gameOver();
-  if (!isGameOver) {
-    window.requestAnimationFrame(animate);
-  }
+  window.requestAnimationFrame(animate);
 }
 
 // Start Game, Reset Everything
 function startGame() {
   if (isGameOver && !isNewGame) {
-    console.log('here in startGame');
+    // console.log('here in startGame');
     document.body.removeChild(gameOverEl);
     canvas.hidden = false;
   }
@@ -235,7 +216,7 @@ function startGame() {
   isNewGame = false;
   ballReset();
   createCanvas();
-  // renderIntro();
+  renderIntro();
   
   paddleIndex = 0;
   window.requestAnimationFrame(animate);
