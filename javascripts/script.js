@@ -205,18 +205,21 @@ function animate() {
 
 // Start Game, Reset Everything
 function startGame() {
-  if (isGameOver && !isNewGame) {
-    // console.log('here in startGame');
-    document.body.removeChild(gameOverEl);
-    canvas.hidden = false;
-  }
-  score[0] = 0;
-  score[1] = 0;
-  isGameOver = false;
-  isNewGame = false;
-  ballReset();
+  // if (isGameOver && !isNewGame) {
+  //   // console.log('here in startGame');
+  //   document.body.removeChild(gameOverEl);
+  //   canvas.hidden = false;
+  // }
+  // score[0] = 0;
+  // score[1] = 0;
+  // isGameOver = false;
+  // isNewGame = false;
+  // ballReset();
   createCanvas();
   renderIntro();
+
+  // emit event that we are ready for a player
+  socket.emit('ready');
   
   paddleIndex = 0;
   window.requestAnimationFrame(animate);
@@ -237,4 +240,8 @@ function startGame() {
 
 // On Load
 startGame();
+
+socket.on('connect', (socket) => {
+  console.log('Connected as... ', socket.id);
+});
 
