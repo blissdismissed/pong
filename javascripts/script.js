@@ -7,6 +7,7 @@ const socket = io('http://localhost:3000');
 // const isMobile = window.matchMedia('(max-width: 600px)');
 // const gameOverEl = document.createElement('div');
 
+let isReferee = false;
 let paddleIndex = 0;
 
 let width = 500;
@@ -203,28 +204,22 @@ function animate() {
   window.requestAnimationFrame(animate);
 }
 
-// Start Game, Reset Everything
-function startGame() {
-  // if (isGameOver && !isNewGame) {
-  //   // console.log('here in startGame');
-  //   document.body.removeChild(gameOverEl);
-  //   canvas.hidden = false;
-  // }
-  // score[0] = 0;
-  // score[1] = 0;
-  // isGameOver = false;
-  // isNewGame = false;
-  // ballReset();
+// Load game, Reset Everything
+function loadGame() {
   createCanvas();
   renderIntro();
 
   // emit event that we are ready for a player
   socket.emit('ready');
+}
   
-  paddleIndex = 0;
+
+function startGame() {
+  // determine who controles which paddle
+  paddleIndex = isReferee ? 0 : 1;
+
   window.requestAnimationFrame(animate);
   canvas.addEventListener('mousemove', (e) => {
-    // console.log(e.clientX);
     playerMoved = true;
     paddleX[paddleIndex] = e.offsetX;
     if (paddleX[paddleIndex] < 0) {
@@ -238,10 +233,17 @@ function startGame() {
   });
 }
 
-// On Load
-startGame();
 
-socket.on('connect', (socket) => {
+// On Load
+loadGame();
+
+socket.on('connect', () => {
   console.log('Connected as... ', socket.id);
 });
 
+socket.on('startGame', (refereeId) => {
+  console.log('Referee is ', refereeId);
+
+  isReferee = socket.id === refereeId;
+  startGame();
+})
