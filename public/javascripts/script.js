@@ -1,7 +1,7 @@
 // Canvas Related 
 const canvas = document.createElement('canvas');
 const context = canvas.getContext('2d');
-const socket = io();
+const socket = io('/pong');
 
 //   // Single Player Thangs
 // const isMobile = window.matchMedia('(max-width: 600px)');
